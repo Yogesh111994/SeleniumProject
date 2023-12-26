@@ -117,18 +117,10 @@
 							<suiteXmlFile>
 								src/test/resources/testrunners/testng_sanity.xml
 							</suiteXmlFile>
-							<argLine>
-								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-							</argLine>
+							
 						</suiteXmlFiles>
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjweaver</artifactId>
-							<version>${aspectj.version}</version>
-						</dependency>
-					</dependencies>
+					
 				</plugin>
 			</plugins>
 		</pluginManagement>
