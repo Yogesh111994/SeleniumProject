@@ -19,13 +19,13 @@
 	</test>
 
 
-	<!--<test name="Account Page Test">
+	<test name="Account Page Test">
 		<parameter name="url" value="https://www.amazon.com" />
 		<parameter name="browser" value="firefox" />
 		<classes>
 			<class name="com.qa.opencart.test.AccountPageTest" />
 		</classes>
-	</test>-->
+	</test>
 
 
 	<!--	<test name="Register page Test">
