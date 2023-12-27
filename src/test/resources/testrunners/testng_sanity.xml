@@ -6,7 +6,7 @@
 
 	<listeners>
 		<listener class-name="com.qa.opencart.listener.ExtentReportListener"></listener>
-		<!--<listener class-name="com.qa.opencart.listener.AnnotationTransformer"></listener>-->
+		<listener class-name="com.qa.opencart.listener.AnnotationTransformer"></listener>
 		<listener class-name="com.qa.opencart.listener.TestAllureListener"></listener>
 	</listeners>
 
@@ -20,7 +20,7 @@
 
 
 	<test name="Account Page Test">
-		<!--<parameter name="url" value="https://www.amazon.com" />-->
+		
 		<parameter name="browser" value="firefox" />
 		<classes>
 			<class name="com.qa.opencart.test.AccountPageTest" />
