@@ -115,7 +115,8 @@
 						<reuseForks>true</reuseForks>
 						<suiteXmlFiles>
 							<suiteXmlFile>
-								src/test/resources/testrunners/testng_sanity.xml
+<!--								src/test/resources/testrunners/testng_sanity.xml-->
+								<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
 							</suiteXmlFile>
 							
 						</suiteXmlFiles>

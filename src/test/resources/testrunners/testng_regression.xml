@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="TestNG Regression Suite" verbose="4" thread-count="1" parallel="tests" >
+<suite name="TestNG Regression Suite" verbose="4" thread-count="1"
+	parallel="tests">
 
+	<listeners>
+		<listener class-name="com.qa.opencart.listener.ExtentReportListener"></listener>
+		<listener class-name="com.qa.opencart.listener.AnnotationTransformer"></listener>
+		<listener class-name="com.qa.opencart.listener.TestAllureListener"></listener>
+	</listeners>
 
-	<test name="Go Rest API">
-		<parameter name="BaseURI" value="https://gorest.co.in" />
+	<test name="Login page test">
+		<!--<parameter name="url" value="https://www.google.com" />-->
+		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.qa.gorest.tests.GetUserTest" />
+			<class name="com.qa.opencart.test.LoginPageTest" />
 		</classes>
 	</test>
-
-	<test name="Circuit API">
-		<parameter name="BaseURI" value="https://ergast.com" />
-		<classes>
-			<class name="com.qa.gorest.tests.CircuitUser" />
-		</classes>
-	</test>
-
 </suite>

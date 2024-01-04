@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="TestNG Regression Suite" verbose="4" thread-count="1"
+<suite name="TestNG Regression Suite" verbose="4" thread-count="4"
 	parallel="tests">
 
 	<listeners>
@@ -20,7 +20,6 @@
 
 
 	<test name="Account Page Test">
-		
 		<parameter name="browser" value="firefox" />
 		<classes>
 			<class name="com.qa.opencart.test.AccountPageTest" />
@@ -28,22 +27,19 @@
 	</test>
 
 
-	<!--	<test name="Register page Test">
-		<parameter name="url"
-			value="https://naveenautomationlabs.com/opencart" />
+		<test name="Register page Test">
+		<!--<parameter name="url" value="https://naveenautomationlabs.com/opencart" />-->
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.test.RegisterPageTest" />
 		</classes>
-	</test>-->
+	</test>
 
-	<!--	<test name="Product result page Test">
-		<parameter name="url" value="https://naveenautomationlabs.com/opencart" />
-		<parameter name="browser" value="edge" />
+		<test name="Product result page Test">
+		<!--<parameter name="url" value="https://naveenautomationlabs.com/opencart" />-->
+		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.test.ProductResultPageTest" />
 		</classes>
-	</test>-->
-
-
+	</test>
 </suite>
