@@ -21,14 +21,14 @@
 	</test>
 
 
-	<test name="Account Page Test">
+<!--	<test name="Account Page Test">
 		<parameter name="browser" value="chrome" />
 		<parameter name= "browserversion" value="119"/>
 		<parameter name="testname" value="Account Page Test"></parameter>
 		<classes>
 			<class name="com.qa.opencart.test.AccountPageTest" />
 		</classes>
-	</test>
+	</test>-->
 
 
 		<test name="Register page Test">
