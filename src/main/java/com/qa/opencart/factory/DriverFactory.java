@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -14,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.io.FileHandler;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.qa.opencart.exception.FrameworkException;
@@ -24,29 +27,43 @@ public class DriverFactory {
 	protected Properties prop;
 	OptionsManager optionsManager;
 	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
-	
+
 	public WebDriver initDriver(Properties prop) {
 
-		String browserName=prop.getProperty("browser");
+		String browserName = prop.getProperty("browser");
 		// If you want pass the browser name via command promp then enable below code
 		// String browserName =System.getProperty("browser");
 		System.out.println("Browser Name : " + browserName);
-		 optionsManager =new OptionsManager(prop);
+		optionsManager = new OptionsManager(prop);
 		switch (browserName.toLowerCase().trim()) {
 		case "chrome":
-		//	driver = new ChromeDriver(optionsManager.getChromeOptions());
-			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				initRemoteDriver(browserName);
+			} else {
+				// driver = new ChromeDriver(optionsManager.getChromeOptions());
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 			break;
 		case "firefox":
-		//	driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				initRemoteDriver(browserName);
+			}
+			else {
+			// driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
 			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 			break;
 		case "edge":
-		//	driver = new EdgeDriver(optionsManager.getEdgeOptions());
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				initRemoteDriver(browserName);
+			}
+			else {
+			// driver = new EdgeDriver(optionsManager.getEdgeOptions());
 			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			}
 			break;
 		case "safari":
-		//	driver = new SafariDriver();
+			// driver = new SafariDriver();
 			tlDriver.set(new SafariDriver());
 			break;
 
@@ -62,44 +79,73 @@ public class DriverFactory {
 		return getDriver();
 	}
 	
+	/**
+	 * Run test on grid
+	 * @param browserName
+	 */
+
+	private void initRemoteDriver(String browserName) {
+		System.out.println("Running test on grid with browser: " + browserName);
+		try {
+		switch (browserName.toLowerCase().trim()) {
+		case "chrome":
+			tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+			break;
+		case "firefox":
+			tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getFirefoxOptions()));
+			break;
+		case "edge":
+			tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getEdgeOptions()));
+			break;
+
+		default:
+			System.out.println("wrong browser info.... can not run on grid remote machine....");
+			break;
+		}
+		}
+		catch(MalformedURLException e) {
+			
+		}
+	}
+
 	public static WebDriver getDriver() {
 		return tlDriver.get();
 	}
-	
-	public Properties initProp() {
-		
-		FileInputStream ip=null;
-		prop=new Properties();
-		String envName=System.getProperty("env");
-		System.out.println("envName name is : "+ envName );
-		
-		try {
-		if(envName==null) {
-			 ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
-		}
-		else {
-			switch (envName.toLowerCase().trim()) {
-			case "qa":
-				 ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
-				break;
-			case "dev":
-				 ip = new FileInputStream("./src/test/resources/config/config.dev.properties");
-				break;
-			case "stage":
-				 ip = new FileInputStream("./src/test/resources/config/config.stage.properties");
-				break;
-			case "prod":
-				 ip = new FileInputStream("./src/test/resources/config/config.prod.properties");
-				break;
 
-			default:
-				System.out.println("Please paas the right enviournment name : "+envName);
-				throw new FrameworkException("Wrong Enviournment Name");
+	public Properties initProp() {
+
+		FileInputStream ip = null;
+		prop = new Properties();
+		String envName = System.getProperty("env");
+		System.out.println("envName name is : " + envName);
+
+		try {
+			if (envName == null) {
+				ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+			} else {
+				switch (envName.toLowerCase().trim()) {
+				case "qa":
+					ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+					break;
+				case "dev":
+					ip = new FileInputStream("./src/test/resources/config/config.dev.properties");
+					break;
+				case "stage":
+					ip = new FileInputStream("./src/test/resources/config/config.stage.properties");
+					break;
+				case "prod":
+					ip = new FileInputStream("./src/test/resources/config/config.prod.properties");
+					break;
+
+				default:
+					System.out.println("Please paas the right enviournment name : " + envName);
+					throw new FrameworkException("Wrong Enviournment Name");
+				}
 			}
-		}
-		} catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		};
+		}
+		;
 		try {
 			prop.load(ip);
 		} catch (IOException e) {
@@ -107,16 +153,18 @@ public class DriverFactory {
 		}
 		return prop;
 	}
+
 	/**
 	 * take screenshot
 	 */
 	public static String getScreenshot(String methodName) {
 		File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
-		
-		String path = System.getProperty("user.dir") + "/screenshot/" + methodName + "_" + System.currentTimeMillis()+".png";
-				
+
+		String path = System.getProperty("user.dir") + "/screenshot/" + methodName + "_" + System.currentTimeMillis()
+				+ ".png";
+
 		File destination = new File(path);
-		
+
 		try {
 			FileHandler.copy(srcFile, destination);
 		} catch (IOException e) {

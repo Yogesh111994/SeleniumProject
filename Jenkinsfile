@@ -39,7 +39,7 @@ pipeline
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/Yogesh111994/SeleniumProject'
-                    bat "mvn clean test -Dsurefire.suiteXmlFiles=src\test\resources\testrunners\testng_sanity.xml"
+                    bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunners/testng_sanity.xml"
                     
                 }
             }
@@ -83,15 +83,13 @@ pipeline
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/Yogesh111994/SeleniumProject'
-                    bat "mvn clean test -Dsurefire.suiteXmlFiles=src\test\resources\testrunners\testng_regression.xml"
+                    bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunners/testng_regression.xml"
                     
                 }
             }
         }
         
-        
-        
-        stage('Publish sanity Extent Report'){
+       git               stage('Publish sanity Extent Report'){
             steps{
                      publishHTML([allowMissing: false,
                                   alwaysLinkToLastBuild: false, 
@@ -102,8 +100,7 @@ pipeline
                                   reportTitles: ''])
             }
         }
-        
-        
+           
         stage("Deploy to PROD"){
             steps{
                 echo("deploy to PROD")
