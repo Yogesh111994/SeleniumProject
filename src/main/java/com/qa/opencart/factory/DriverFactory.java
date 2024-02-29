@@ -145,7 +145,6 @@ public class DriverFactory {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		;
 		try {
 			prop.load(ip);
 		} catch (IOException e) {
